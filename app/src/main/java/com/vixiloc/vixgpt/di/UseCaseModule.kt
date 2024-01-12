@@ -4,6 +4,8 @@ import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
 import com.vixiloc.vixgpt.domain.use_case.SendChat
 import com.vixiloc.vixgpt.domain.use_case.UpdateSettings
+import com.vixiloc.vixgpt.domain.use_case.ValidateQuestion
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -18,5 +20,8 @@ val useCaseModule = module {
     }
     single {
         UpdateSettings(repository = get())
+    }
+    single {
+        ValidateQuestion(context = androidContext())
     }
 }
