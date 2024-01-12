@@ -11,5 +11,7 @@
     <string name="api_key_icon">Api key icon</string>
     <string name="model">Custom Model</string>
     <string name="model_message">By default this app is using gpt-3.5-turbo</string>
+    <string name="question_blank_error">Please fill out the question</string>
+    <string name="question_exceed_max_error">The question is too long</string>
     <item name="markdownTextId" type="id" />
 </resources>
