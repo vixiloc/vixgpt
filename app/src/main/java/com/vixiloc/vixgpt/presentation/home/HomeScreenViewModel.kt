@@ -9,6 +9,7 @@ import com.vixiloc.vixgpt.domain.model.Chats
 import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
 import com.vixiloc.vixgpt.domain.use_case.SendChat
+import com.vixiloc.vixgpt.domain.use_case.ValidateQuestion
 import com.vixiloc.vixgpt.utils.Resource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -19,7 +20,8 @@ import java.time.LocalDateTime
 class HomeScreenViewModel(
     private val getSettings: GetAllSettings,
     private val getChats: GetAllChats,
-    private val sendChat: SendChat
+    private val sendChat: SendChat,
+    private val validateQuestion: ValidateQuestion
 ) : ViewModel() {
     var state by mutableStateOf(HomeScreenState())
 
@@ -34,7 +36,7 @@ class HomeScreenViewModel(
             }
 
             is HomeScreenEvent.AnswerDismissed -> {
-                state = state.copy(answer = "")
+                state = state.copy(answer = "", question = "")
             }
 
             is HomeScreenEvent.ErrorAlertDismissed -> {
@@ -45,7 +47,8 @@ class HomeScreenViewModel(
 
     private fun submit() {
         state = state.copy(isLoading = true)
-        if (state.question.isNotEmpty()) {
+        val validate = validateQuestion(question = state.question)
+        if (validate is Resource.Success) {
             if (state.settings?.model?.isNotEmpty() == true && state.settings?.apiKey?.isNotEmpty() == true) {
                 viewModelScope.launch {
                     val chats = Chats(
@@ -62,7 +65,6 @@ class HomeScreenViewModel(
                                 state.copy(
                                     isLoading = false,
                                     answer = resource.data?.answer ?: "",
-                                    question = ""
                                 )
                             }
 
@@ -84,7 +86,10 @@ class HomeScreenViewModel(
                 state = state.copy(errorMessage = "Please enter a valid API Key and Model")
             }
         } else {
-            state = state.copy(errorMessage = "Please enter a question")
+            state = state.copy(
+                isLoading = false,
+                errorMessage = validate.message ?: ""
+            )
         }
     }
 
