@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.vixiloc.vixgpt.domain.model.Chats
 import com.vixiloc.vixgpt.domain.model.Settings
 
-@Database(entities = [Chats::class, Settings::class], version = 1)
+@Database(entities = [Chats::class, Settings::class], version = 1, exportSchema = false)
 abstract class ChatsDatabase : RoomDatabase() {
     abstract fun chatsDao(): ChatsDao
 
