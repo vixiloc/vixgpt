@@ -1,23 +1,20 @@
 package com.vixiloc.vixgpt.presentation.settings
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vixiloc.vixgpt.domain.model.Settings
-import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
 import com.vixiloc.vixgpt.domain.use_case.UpdateSettings
-import com.vixiloc.vixgpt.presentation.home.HomeScreenEvent
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class SettingsScreenViewModel(
     private val updateSettings: UpdateSettings,
-    private val getSettings: GetAllSettings
+    getSettings: GetAllSettings
 ) : ViewModel() {
     var state by mutableStateOf(SettingsScreenState())
 
