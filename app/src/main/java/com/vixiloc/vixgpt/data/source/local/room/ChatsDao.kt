@@ -15,7 +15,7 @@ interface ChatsDao {
     suspend fun insert(data: Chats)
 
     @Query("SELECT * from chats ORDER BY id ASC")
-    fun getAllChats(): Flow<List<Chats>>
+    fun getAllChats(): Flow<List<Chats>?>
 
     @Query("DELETE from chats")
     fun deleteAllChats()
