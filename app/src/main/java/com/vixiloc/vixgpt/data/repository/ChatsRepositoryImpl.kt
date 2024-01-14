@@ -10,7 +10,7 @@ class ChatsRepositoryImpl(private val dao: ChatsDao) : ChatsRepository {
         dao.insert(data)
     }
 
-    override fun getAllChats(): Flow<List<Chats>> {
+    override fun getAllChats(): Flow<List<Chats>?> {
         return dao.getAllChats()
     }
 
