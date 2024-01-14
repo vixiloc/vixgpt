@@ -2,6 +2,7 @@ package com.vixiloc.vixgpt.di
 
 import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
+import com.vixiloc.vixgpt.domain.use_case.InsertChat
 import com.vixiloc.vixgpt.domain.use_case.SendChat
 import com.vixiloc.vixgpt.domain.use_case.UpdateSettings
 import com.vixiloc.vixgpt.domain.use_case.ValidateQuestion
@@ -23,5 +24,8 @@ val useCaseModule = module {
     }
     single {
         ValidateQuestion(context = androidContext())
+    }
+    single {
+        InsertChat(repository = get())
     }
 }
