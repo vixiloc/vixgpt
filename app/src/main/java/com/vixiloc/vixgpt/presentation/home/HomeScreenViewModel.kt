@@ -98,7 +98,9 @@ class HomeScreenViewModel(
             getSettings().onEach {
                 state = state.copy(settings = it)
             }.launchIn(viewModelScope)
-            getChats().onEach { }.launchIn(viewModelScope)
+            getChats().onEach { chats ->
+                state = state.copy(chats = chats ?: emptyList())
+            }.launchIn(viewModelScope)
         }
     }
 
