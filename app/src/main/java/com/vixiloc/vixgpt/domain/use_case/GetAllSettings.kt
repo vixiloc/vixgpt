@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 class GetAllSettings(private val repository: SettingsRepository) {
     operator fun invoke(): Flow<Settings?> {
-        Log.i("XLOG", "invokeSettings: ${repository.getSettings()}")
         return repository.getSettings()
     }
 }

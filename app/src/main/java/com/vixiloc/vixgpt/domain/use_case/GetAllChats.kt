@@ -6,8 +6,7 @@ import com.vixiloc.vixgpt.domain.repository.ChatsRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetAllChats(private val repository: ChatsRepository) {
-    operator fun invoke(): Flow<List<Chats>> {
-        Log.i("XLOG", "invokeChats: Called")
+    operator fun invoke(): Flow<List<Chats>?> {
         return repository.getAllChats()
     }
 }
