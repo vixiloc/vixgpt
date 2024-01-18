@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.vixiloc.vixgpt.R
 import com.vixiloc.vixgpt.presentation.home.components.BottomSheetAnswer
+import com.vixiloc.vixgpt.presentation.home.components.ChatLists
 import com.vixiloc.vixgpt.presentation.lottie.LottieAnimation
 import com.vixiloc.vixgpt.presentation.navigations.MainRoute
 import com.vixiloc.vixgpt.presentation.ui.theme.VixGPTTheme
@@ -87,19 +91,25 @@ fun HomeScreen(
                     viewModel.setState(HomeScreenEvent.Submit)
                 })
             )
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                if (state.isLoading) {
-                    LottieAnimation(
-                        modifier = Modifier.width(150.dp),
-                        resource = R.raw.writing_animation,
-                    )
-                } else {
+
+            if (state.chats.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LottieAnimation(
                         modifier = Modifier.width(200.dp),
                         resource = R.raw.ask_me_1704295393783
                     )
                 }
             }
+
+            if (state.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    LottieAnimation(
+                        modifier = Modifier.width(150.dp),
+                        resource = R.raw.writing_animation,
+                    )
+                }
+            }
+
             if (state.answer.isNotBlank()) {
                 BottomSheetAnswer(answer = state.answer, onDismiss = {
                     viewModel.setState(HomeScreenEvent.AnswerDismissed)
@@ -137,6 +147,15 @@ fun HomeScreen(
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     })
+            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                items(state.chats) { chat ->
+                    ChatLists(chats = chat)
+                }
             }
         }
     }
