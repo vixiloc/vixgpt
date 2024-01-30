@@ -12,6 +12,8 @@ val viewModelModule = module {
             getChats = get(),
             sendChat = get(),
             validateQuestion = get(),
+            insertChat = get(),
+            clearChats = get(),
         )
     }
     viewModel {
