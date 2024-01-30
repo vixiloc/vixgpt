@@ -18,7 +18,7 @@ interface ChatsDao {
     fun getAllChats(): Flow<List<Chats>?>
 
     @Query("DELETE from chats")
-    fun deleteAllChats()
+    suspend fun deleteAllChats()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateSettings(data: Settings)
