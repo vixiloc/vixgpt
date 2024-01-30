@@ -14,7 +14,7 @@ class ChatsRepositoryImpl(private val dao: ChatsDao) : ChatsRepository {
         return dao.getAllChats()
     }
 
-    override fun deleteAllChats() {
+    override suspend fun deleteAllChats() {
         dao.deleteAllChats()
     }
 }
