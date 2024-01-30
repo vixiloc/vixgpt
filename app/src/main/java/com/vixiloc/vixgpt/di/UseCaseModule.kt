@@ -1,5 +1,6 @@
 package com.vixiloc.vixgpt.di
 
+import com.vixiloc.vixgpt.domain.use_case.ClearChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
 import com.vixiloc.vixgpt.domain.use_case.InsertChat
@@ -27,5 +28,8 @@ val useCaseModule = module {
     }
     single {
         InsertChat(repository = get())
+    }
+    single {
+        ClearChats(repository = get())
     }
 }
