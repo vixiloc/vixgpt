@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.vixiloc.vixgpt.domain.model.Chats
 import com.vixiloc.vixgpt.domain.model.Settings
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +18,9 @@ interface ChatsDao {
 
     @Query("DELETE from chats")
     suspend fun deleteAllChats()
+
+    @Query("SELECT * from chats WHERE id = :id limit 1")
+    fun getChatById(id: Int): Flow<Chats?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateSettings(data: Settings)
