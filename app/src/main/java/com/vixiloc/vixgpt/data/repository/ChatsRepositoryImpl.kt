@@ -14,6 +14,10 @@ class ChatsRepositoryImpl(private val dao: ChatsDao) : ChatsRepository {
         return dao.getAllChats()
     }
 
+    override fun getChatById(id: Int): Flow<Chats?> {
+        return dao.getChatById(id)
+    }
+
     override suspend fun deleteAllChats() {
         dao.deleteAllChats()
     }
