@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface ChatsRepository {
     suspend fun insert(data: Chats)
     fun getAllChats(): Flow<List<Chats>?>
+    fun getChatById(id: Int): Flow<Chats?>
     suspend fun deleteAllChats()
 }
