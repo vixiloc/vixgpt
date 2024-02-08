@@ -3,6 +3,7 @@ package com.vixiloc.vixgpt.di
 import com.vixiloc.vixgpt.domain.use_case.ClearChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
+import com.vixiloc.vixgpt.domain.use_case.GetChatById
 import com.vixiloc.vixgpt.domain.use_case.InsertChat
 import com.vixiloc.vixgpt.domain.use_case.SendChat
 import com.vixiloc.vixgpt.domain.use_case.UpdateSettings
@@ -31,5 +32,8 @@ val useCaseModule = module {
     }
     single {
         ClearChats(repository = get())
+    }
+    single {
+        GetChatById(repository = get())
     }
 }
