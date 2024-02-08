@@ -95,6 +95,24 @@ fun SettingsScreen(
                     )
                     Divider()
                 }
+                item {
+                    ListItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                // TODO: Open Screen
+                            },
+                        headlineContent = { Text(text = "Open source software attribution") },
+                        supportingContent = { Text(text = "open source software attribution") },
+                        trailingContent = {
+                            Icon(
+                                imageVector = Icons.Outlined.ArrowRight,
+                                contentDescription = null
+                            )
+                        }
+                    )
+                    Divider()
+                }
             }
             if (state.openSettingsSheet) {
                 BottomSheetSettings(onDismiss = { viewModel.setState(SettingsScreenEvent.CloseSettingsSheet) }) {
