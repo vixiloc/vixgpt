@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -92,7 +92,7 @@ fun HomeScreen(
                 })
             )
 
-            if (state.chats.isEmpty()) {
+            if (state.chats.isEmpty() && !state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LottieAnimation(
                         modifier = Modifier.width(200.dp),
@@ -109,7 +109,6 @@ fun HomeScreen(
                     )
                 }
             }
-
             if (state.answer.isNotBlank()) {
                 BottomSheetAnswer(answer = state.answer, onDismiss = {
                     viewModel.setState(HomeScreenEvent.AnswerDismissed)
@@ -154,7 +153,27 @@ fun HomeScreen(
                     .weight(1f)
             ) {
                 items(state.chats) { chat ->
-                    ChatLists(chats = chat)
+                    ChatLists(chats = chat, onClick = {
+                        viewModel.setState(HomeScreenEvent.ChatClicked(it))
+                    })
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp), contentAlignment = Alignment.Center
+                    ) {
+                        Button(
+                            onClick = { viewModel.setState(HomeScreenEvent.ClearAllChat) },
+                            modifier = Modifier
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.DeleteOutline,
+                                contentDescription = null
+                            )
+                            Text(text = "Clear History")
+                        }
+                    }
                 }
             }
         }

@@ -1,27 +1,33 @@
 package com.vixiloc.vixgpt.presentation.home
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vixiloc.vixgpt.domain.model.Chats
+import com.vixiloc.vixgpt.domain.use_case.ClearChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllChats
 import com.vixiloc.vixgpt.domain.use_case.GetAllSettings
+import com.vixiloc.vixgpt.domain.use_case.GetChatById
+import com.vixiloc.vixgpt.domain.use_case.InsertChat
 import com.vixiloc.vixgpt.domain.use_case.SendChat
 import com.vixiloc.vixgpt.domain.use_case.ValidateQuestion
 import com.vixiloc.vixgpt.utils.Resource
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 class HomeScreenViewModel(
     private val getSettings: GetAllSettings,
     private val getChats: GetAllChats,
     private val sendChat: SendChat,
-    private val validateQuestion: ValidateQuestion
+    private val clearChats: ClearChats,
+    private val insertChat: InsertChat,
+    private val validateQuestion: ValidateQuestion,
+    private val getChatById: GetChatById,
 ) : ViewModel() {
     var state by mutableStateOf(HomeScreenState())
 
@@ -42,7 +48,29 @@ class HomeScreenViewModel(
             is HomeScreenEvent.ErrorAlertDismissed -> {
                 state = state.copy(errorMessage = "")
             }
+
+            is HomeScreenEvent.ClearAllChat -> {
+                viewModelScope.launch {
+                    clearChats()
+                }
+            }
+
+            is HomeScreenEvent.ChatClicked -> {
+                viewModelScope.launch {
+                    getChat(event.id)
+                }
+            }
         }
+    }
+
+    private fun getChat(id: Int) {
+        Log.d(TAG, "getChat: Called!")
+        getChatById(id).onEach { chats ->
+            state = state.copy(
+                answer = chats?.answer ?: "",
+                question = chats?.question ?: ""
+            )
+        }.launchIn(viewModelScope)
     }
 
     private fun submit() {
@@ -62,8 +90,8 @@ class HomeScreenViewModel(
                     ).onEach { resource ->
                         state = when (resource) {
                             is Resource.Success -> {
+                                saveChat(answer = resource.data?.answer ?: "")
                                 state.copy(
-                                    isLoading = false,
                                     answer = resource.data?.answer ?: "",
                                 )
                             }
@@ -91,6 +119,19 @@ class HomeScreenViewModel(
                 errorMessage = validate.message ?: ""
             )
         }
+    }
+
+    private fun saveChat(answer: String) {
+        val chats = Chats(
+            question = state.question,
+            answer = answer,
+            model = state.settings?.model ?: "",
+        )
+
+        viewModelScope.launch {
+            insertChat(chats)
+        }
+        state = state.copy(isLoading = false)
     }
 
     init {
