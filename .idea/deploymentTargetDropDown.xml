@@ -2,11 +2,27 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ChatBubblePrev">
+      <entry key="HomeScreenPreview">
+        <State />
+      </entry>
+      <entry key="SettingsScreenPreview">
         <State />
       </entry>
       <entry key="app">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\vixiloc\.android\avd\Pixel_5_API_31.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-01-03T16:14:14.624312600Z" />
+        </State>
       </entry>
     </value>
   </component>
